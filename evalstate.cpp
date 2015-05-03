@@ -15,7 +15,8 @@ using namespace std;
 /* Implementation of the EvalState class */
 
 EvalState::EvalState() {
-   /* Empty */
+    program_counter = SEQUENTIAL;
+
 }
 
 EvalState::~EvalState() {
@@ -32,4 +33,14 @@ int EvalState::getValue(string var) {
 
 bool EvalState::isDefined(string var) {
    return symbolTable.containsKey(var);
+}
+
+void EvalState::setPC(int line_number)
+{
+    program_counter = line_number;
+}
+
+int EvalState::getPC()
+{
+    return program_counter;
 }

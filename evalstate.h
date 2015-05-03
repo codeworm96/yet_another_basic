@@ -28,6 +28,9 @@ class EvalState {
 
 public:
 
+    static const int SEQUENTIAL = -1;  //Special Line Number for sequential executive;
+
+
 /*
  * Constructor: EvalState
  * Usage: EvalState state;
@@ -73,8 +76,27 @@ public:
 
    bool isDefined(std::string var);
 
+/*
+ * Method: setPC
+ * Usage: state.setPC(line_number);
+ * ----------------------------------
+ * Sets the program counter to $line_number.
+ */
+
+   void setPC(int line_number);
+
+/*
+ * Method: getPC
+ * Usage: int line_number = state.getPC();
+ * ---------------------------------------
+ * Returns the program counter.
+ */
+
+   int getPC();
+
 private:
 
+   int program_counter; //store the address of the next instruction
    Map<std::string,int> symbolTable;
 
 };
