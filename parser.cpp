@@ -18,14 +18,11 @@ using namespace std;
 /*
  * Implementation notes: parseExp
  * ------------------------------
- * This code just reads an expression and then checks for extra tokens.
+ * This code just reads an expression.
  */
 
 Expression *parseExp(TokenScanner & scanner) {
    Expression *exp = readE(scanner);
-   if (scanner.hasMoreTokens()) {
-      error("parseExp: Found extra token: " + scanner.nextToken());
-   }
    return exp;
 }
 
@@ -82,7 +79,7 @@ Expression *readT(TokenScanner & scanner) {
  */
 
 int precedence(string token) {
-   if (token == "=") return 1;
+   //if (token == "=") return 1;
    if (token == "+" || token == "-") return 2;
    if (token == "*" || token == "/") return 3;
    return 0;

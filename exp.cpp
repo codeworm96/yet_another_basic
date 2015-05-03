@@ -68,7 +68,7 @@ IdentifierExp::IdentifierExp(string name) {
 }
 
 int IdentifierExp::eval(EvalState & state) {
-   if (!state.isDefined(name)) error(name + " is undefined");
+   if (!state.isDefined(name)) error("VARIABLE NOT DEFINED");
    return state.getValue(name);
 }
 
@@ -109,9 +109,12 @@ CompoundExp::~CompoundExp() {
  * The eval method for the compound expression case must check for the
  * assignment operator as a special case.  Unlike the arithmetic operators
  * the assignment operator does not evaluate its left operand.
+ *
+ * Note: Assignment abandoned!!!
  */
 
 int CompoundExp::eval(EvalState & state) {
+   /*
    if (op == "=") {
       if (lhs->getType() != IDENTIFIER) {
          error("Illegal variable in assignment");
@@ -120,13 +123,20 @@ int CompoundExp::eval(EvalState & state) {
       state.setValue(((IdentifierExp *) lhs)->getName(), val);
       return val;
    }
+   */
    int left = lhs->eval(state);
    int right = rhs->eval(state);
    if (op == "+") return left + right;
    if (op == "-") return left - right;
    if (op == "*") return left * right;
-   if (op == "/") return left / right;
-   error("Illegal operator in expression");
+   if (op == "/"){
+       if(right != 0){
+           return left / right;
+       }else{
+           error("DIVIDE BY ZERO");
+       }
+   }
+   error("SYNTAX ERROR");
    return 0;
 }
 
