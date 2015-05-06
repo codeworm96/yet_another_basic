@@ -13,27 +13,33 @@
 #include <string>
 #include "exp.h"
 #include "parser.h"
+#include "statement.h"
 #include "program.h"
 #include "../StanfordCPPLib/error.h"
 #include "../StanfordCPPLib/tokenscanner.h"
 
 #include "../StanfordCPPLib/simpio.h"
 #include "../StanfordCPPLib/strlib.h"
+#include "../StanfordCPPLib/lexicon.h"
 using namespace std;
 
 /* Function prototypes */
 
-void processLine(string line, Program & program, EvalState & state);
+void processLine(string line, Program & program, EvalState & state, Lexicon & directStmt);
 
 /* Main program */
 
 int main() {
    EvalState state;
    Program program;
+   Lexicon directStmt;
+   directStmt.add("LET");
+   directStmt.add("INPUT");
+   directStmt.add("PRINT");
    cout << "Stub implementation of BASIC" << endl;
    while (true) {
       try {
-         processLine(getLine(), program, state);
+         processLine(getLine(), program, state, directStmt);
       } catch (ErrorException & ex) {
          cerr << "Error: " << ex.getMessage() << endl;
       }
@@ -43,7 +49,7 @@ int main() {
 
 /*
  * Function: processLine
- * Usage: processLine(line, program, state);
+ * Usage: processLine(line, program, state, directstmt);
  * -----------------------------------------
  * Processes a single line entered by the user.  In this version,
  * the implementation does exactly what the interpreter program
@@ -54,13 +60,26 @@ int main() {
  * or one of the BASIC commands, such as LIST or RUN.
  */
 
-void processLine(string line, Program & program, EvalState & state) {
+void processLine(string line, Program & program, EvalState & state, Lexicon & directStmt) {
    TokenScanner scanner;
    scanner.ignoreWhitespace();
    scanner.scanNumbers();
    scanner.setInput(line);
+   /*
    Expression *exp = parseExp(scanner);
    int value = exp->eval(state);
    cout << value << endl;
    delete exp;
+   */
+   if (!scanner.hasMoreTokens()){
+       return;
+   }
+   string token = scanner.nextToken();
+   if (scanner.getTokenType(token) == NUMBER){}
+   if (directStmt.contains(token)){
+       scanner.saveToken(token);
+       Statement * stmt = parseDirect(scanner);
+       stmt->execute(state);
+       delete stmt;
+   }
 }
