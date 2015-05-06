@@ -13,6 +13,7 @@
 #include "../StanfordCPPLib/error.h"
 #include "../StanfordCPPLib/strlib.h"
 #include "../StanfordCPPLib/tokenscanner.h"
+#include "../StanfordCPPLib/lexicon.h"
 using namespace std;
 
 /*
@@ -24,6 +25,26 @@ using namespace std;
 Expression *parseExp(TokenScanner & scanner) {
    Expression *exp = readE(scanner);
    return exp;
+}
+
+
+// get an operator from scanner, if fails returns an empty string
+string get_op(TokenScanner & scanner)
+{
+    string op = scanner.nextToken();
+    if (op == "+" || op == "-" || op == "*" || op == "/"){
+        return op;
+    }else{
+        scanner.saveToken(op);
+        op = "";
+        return op;
+    }
+}
+
+bool is_keyword(string id)
+{
+    static Lexicon keyword("BasicKeywords.txt");
+    return keyword.contains(id);
 }
 
 /*
@@ -41,7 +62,7 @@ Expression *readE(TokenScanner & scanner, int prec) {
    Expression *exp = readT(scanner);
    string token;
    while (true) {
-      token = scanner.nextToken();
+      token = get_op(scanner);
       int newPrec = precedence(token);
       if (newPrec <= prec) break;
       Expression *rhs = readE(scanner, newPrec);
@@ -61,12 +82,12 @@ Expression *readE(TokenScanner & scanner, int prec) {
 Expression *readT(TokenScanner & scanner) {
    string token = scanner.nextToken();
    TokenType type = scanner.getTokenType(token);
-   if (type == WORD) return new IdentifierExp(token);
    if (type == NUMBER) return new ConstantExp(stringToInteger(token));
-   if (token != "(") error("Illegal term in expression");
+   if (type == WORD && !is_keyword(token)) return new IdentifierExp(token);
+   if (token != "(") error("SYNTAX ERROR");
    Expression *exp = readE(scanner);
    if (scanner.nextToken() != ")") {
-      error("Unbalanced parentheses in expression");
+      error("SYNTAX ERROR");
    }
    return exp;
 }
