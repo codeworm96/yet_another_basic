@@ -111,4 +111,37 @@ class LetStatement : public Statement
         std::string name;
         Expression * exp;
 };
+
+class RemStatement : public Statement
+{
+    public:
+/*
+ * Constructor: RemStatement
+ * ----------------------
+ * The constructor initializes a rem statement
+ */
+
+   RemStatement();
+
+/*
+ * Destructor: ~RemStatement
+ * Usage: delete rem_stmt;
+ * -------------------
+ * The destructor deallocates the storage for this statement.
+ * It must be declared virtual to ensure that the correct subclass
+ * destructor is called when deleting a statement.
+ */
+
+   virtual ~RemStatement();
+
+/*
+ * Method: execute
+ * Usage: stmt->execute(state);
+ * ----------------------------
+ *  execute a rem will do nothing
+ */
+
+   virtual void execute(EvalState & state);
+
+};
 #endif

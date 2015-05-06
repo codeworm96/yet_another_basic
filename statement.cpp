@@ -37,4 +37,16 @@ void LetStatement::execute(EvalState & state)
     state.setValue(name, res);
 }
 
+/* Implementation of the RemStatement class */
 
+RemStatement::RemStatement() {
+   /* Empty */
+}
+
+RemStatement::~RemStatement() {
+   /* Empty */
+}
+
+void RemStatement::execute(EvalState & state)
+{
+}
