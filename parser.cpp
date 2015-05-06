@@ -9,6 +9,7 @@
 
 #include "exp.h"
 #include "parser.h"
+#include "statement.h"
 
 #include "../StanfordCPPLib/error.h"
 #include "../StanfordCPPLib/strlib.h"
@@ -104,4 +105,62 @@ int precedence(string token) {
    if (token == "+" || token == "-") return 2;
    if (token == "*" || token == "/") return 3;
    return 0;
+}
+
+//read a name
+string parseName(TokenScanner & scanner)
+{
+    string token = scanner.nextToken();
+    if ((scanner.getTokenType(token) != WORD) || is_keyword(token)){
+        error("SYNTAX ERROR");
+    }
+    return token;
+}
+
+//read a let statement (after the let keyword)
+LetStatement * parseLet(TokenScanner & scanner)
+{
+    string name = parseName(scanner);
+    string token = scanner.nextToken();
+    if (token != "="){
+        error("SYNTAX ERROR");
+    }
+    Expression * exp = parseExp(scanner);
+    if (scanner.hasMoreTokens()){
+        error("SYNTAX ERROR");
+    }
+    LetStatement * stmt = new LetStatement(name, exp);
+    return stmt;
+}
+
+//read a input statement (after the input keyword)
+InputStatement * parseInput(TokenScanner & scanner)
+{
+    string name = parseName(scanner);
+    if (scanner.hasMoreTokens()){
+        error("SYNTAX ERROR");
+    }
+    InputStatement * stmt = new InputStatement(name);
+    return stmt;
+}
+
+//read a print statement (after the print keyword)
+PrintStatement * parsePrint(TokenScanner & scanner)
+{
+    Expression * exp = parseExp(scanner);
+    if (scanner.hasMoreTokens()){
+        error("SYNTAX ERROR");
+    }
+    PrintStatement * stmt = new PrintStatement(exp);
+    return stmt;
+}
+
+//parse a direct executed statement
+Statement * parseDirect(TokenScanner & scanner)
+{
+    string token = scanner.nextToken();
+    if (token == "LET") return parseLet(scanner);
+    if (token == "INPUT") return parseInput(scanner);
+    if (token == "PRINT") return parsePrint(scanner);
+    error("SYNTAX ERROR");
 }

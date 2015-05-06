@@ -9,6 +9,7 @@
 
 #include <string>
 #include "exp.h"
+#include "statement.h"
 
 #include "../StanfordCPPLib/tokenscanner.h"
 
@@ -22,6 +23,15 @@
  */
 
 Expression *parseExp(TokenScanner & scanner);
+
+/*
+ * Function: parseDirect
+ * Usage: Statement *stmt = parseDirect(scanner);
+ * -------------------------------------------
+ * Parse a direct executed statement
+ */
+
+Statement *parseDirect(TokenScanner & scanner);
 
 /*
  * Function: readE
