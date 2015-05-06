@@ -20,3 +20,21 @@ Statement::Statement() {
 Statement::~Statement() {
    /* Empty */
 }
+
+/* Implementation of the let statement class */
+
+LetStatement::LetStatement(std::string init_name, Expression * init_exp):name(init_name), exp(init_exp) {}
+
+LetStatement::~LetStatement()
+{
+    if (exp)
+        delete exp;
+}
+
+void LetStatement::execute(EvalState & state)
+{
+    int res = exp->eval(state);
+    state.setValue(name, res);
+}
+
+

@@ -75,4 +75,40 @@ public:
  * specify its own destructor method to free that memory.
  */
 
+class LetStatement : public Statement
+{
+    public:
+/*
+ * Constructor: LetStatement
+ * ----------------------
+ * The constructor initializes a let statement from a name and an
+ * expression.
+ */
+
+   LetStatement(std::string name, Expression * exp);
+
+/*
+ * Destructor: ~LetStatement
+ * Usage: delete let_stmt;
+ * -------------------
+ * The destructor deallocates the storage for this statement.
+ * It must be declared virtual to ensure that the correct subclass
+ * destructor is called when deleting a statement.
+ */
+
+   virtual ~LetStatement();
+
+/*
+ * Method: execute
+ * Usage: stmt->execute(state);
+ * ----------------------------
+ *  execute a let statement will perform the assignment
+ */
+
+   virtual void execute(EvalState & state);
+
+    private:
+        std::string name;
+        Expression * exp;
+};
 #endif
