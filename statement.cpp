@@ -66,3 +66,20 @@ void InputStatement::execute(EvalState & state)
     int res = input_int();
     state.setValue(name, res);
 }
+
+/* Implementation of the print statement class */
+
+PrintStatement::PrintStatement(Expression * init_exp):exp(init_exp) {}
+
+PrintStatement::~PrintStatement()
+{
+    if (exp)
+        delete exp;
+}
+
+void PrintStatement::execute(EvalState & state)
+{
+    int res = exp->eval(state);
+    cout << res <<endl;
+}
+

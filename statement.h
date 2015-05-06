@@ -180,4 +180,41 @@ class InputStatement : public Statement
         std::string name;
 };
 
+class PrintStatement : public Statement
+{
+    public:
+/*
+ * Constructor: PrintStatement
+ * ----------------------
+ * The constructor initializes a let statement from an
+ * expression.
+ */
+
+   PrintStatement(Expression * init_exp);
+
+/*
+ * Destructor: ~PrintStatement
+ * Usage: delete print_stmt;
+ * -------------------
+ * The destructor deallocates the storage for this statement.
+ * It must be declared virtual to ensure that the correct subclass
+ * destructor is called when deleting a statement.
+ */
+
+   virtual ~PrintStatement();
+
+/*
+ * Method: execute
+ * Usage: stmt->execute(state);
+ * ----------------------------
+ *  execute a print statement will print the result of the expression
+ */
+
+   virtual void execute(EvalState & state);
+
+    private:
+        Expression * exp;
+};
+
+
 #endif
