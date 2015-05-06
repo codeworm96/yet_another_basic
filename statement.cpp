@@ -9,6 +9,7 @@
 
 #include <string>
 #include "statement.h"
+#include "utility.h"
 using namespace std;
 
 /* Implementation of the Statement class */
@@ -49,4 +50,19 @@ RemStatement::~RemStatement() {
 
 void RemStatement::execute(EvalState & state)
 {
+}
+
+/* Implementation of the input statement class */
+
+InputStatement::InputStatement(std::string init_name):name(init_name) {}
+
+InputStatement::~InputStatement()
+{
+    /* Empty */
+}
+
+void InputStatement::execute(EvalState & state)
+{
+    int res = input_int();
+    state.setValue(name, res);
 }

@@ -85,7 +85,7 @@ class LetStatement : public Statement
  * expression.
  */
 
-   LetStatement(std::string name, Expression * exp);
+   LetStatement(std::string init_name, Expression * init_exp);
 
 /*
  * Destructor: ~LetStatement
@@ -144,4 +144,40 @@ class RemStatement : public Statement
    virtual void execute(EvalState & state);
 
 };
+
+class InputStatement : public Statement
+{
+    public:
+/*
+ * Constructor: IntputStatement
+ * ----------------------
+ * The constructor initializes a input statement from a name
+ */
+
+   InputStatement(std::string init_name);
+
+/*
+ * Destructor: ~InputStatement
+ * Usage: delete input_stmt;
+ * -------------------
+ * The destructor deallocates the storage for this statement.
+ * It must be declared virtual to ensure that the correct subclass
+ * destructor is called when deleting a statement.
+ */
+
+   virtual ~InputStatement();
+
+/*
+ * Method: execute
+ * Usage: stmt->execute(state);
+ * ----------------------------
+ *  execute a input statement will read a variable
+ */
+
+   virtual void execute(EvalState & state);
+
+    private:
+        std::string name;
+};
+
 #endif
