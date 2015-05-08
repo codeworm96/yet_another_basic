@@ -15,6 +15,7 @@
 #include "parser.h"
 #include "statement.h"
 #include "program.h"
+#include "utility.h"
 #include "../StanfordCPPLib/error.h"
 #include "../StanfordCPPLib/tokenscanner.h"
 
@@ -36,12 +37,11 @@ int main() {
    directStmt.add("LET");
    directStmt.add("INPUT");
    directStmt.add("PRINT");
-   cout << "Stub implementation of BASIC" << endl;
    while (true) {
       try {
          processLine(getLine(), program, state, directStmt);
       } catch (ErrorException & ex) {
-         cerr << "Error: " << ex.getMessage() << endl;
+         cout << ex.getMessage() << endl;
       }
    }
    return 0;
@@ -75,11 +75,48 @@ void processLine(string line, Program & program, EvalState & state, Lexicon & di
        return;
    }
    string token = scanner.nextToken();
-   if (scanner.getTokenType(token) == NUMBER){}
+   if (scanner.getTokenType(token) == NUMBER){
+       int ln = str2int(token);
+       if (ln >= 0){
+           if (scanner.hasMoreTokens()){
+               Statement * stmt = parseStatement(scanner);
+               program.addSourceLine(ln, line, stmt);
+           }else{
+               program.removeSourceLine(ln);
+           }
+       }else{
+           error("SYNTAX ERROR");
+       }
+       return;
+   }
    if (directStmt.contains(token)){
        scanner.saveToken(token);
        Statement * stmt = parseDirect(scanner);
        stmt->execute(state);
        delete stmt;
+   }else{
+       if (token == "QUIT")
+       {
+           exit(0);
+           return;
+       }
+       if (token == "LIST"){
+           program.list();
+           return;
+       }
+       if (token == "HELP") {
+           return;
+       }
+       if (token == "RUN")
+       {
+           program.run();
+           return;
+       }
+       if (token == "CLEAR"){
+           program.clear();
+           state.clear();
+           return;
+       }
+       error("SYNTAX ERROR");
    }
 }

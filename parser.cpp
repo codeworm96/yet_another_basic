@@ -37,7 +37,6 @@ string get_op(TokenScanner & scanner)
     if (op == "+" || op == "-" || op == "*" || op == "/"){
         return op;
     }else{
-        scanner.saveToken(op);
         op = "";
         return op;
     }

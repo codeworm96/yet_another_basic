@@ -9,8 +9,27 @@
 #define _program_h
 
 #include <string>
+#include <map>
+#include <memory>
 #include "statement.h"
+#include "evalstate.h"
 using namespace std;
+
+class ProgramLine
+{
+    public:
+        ProgramLine(string origin_line, Statement * parsed_line);
+        ProgramLine();
+        ~ProgramLine();
+        //excute the line
+        void execute(EvalState & state);
+        //Show the line
+        void show();
+    private:
+        shared_ptr<Statement> stmt;
+        string line;
+};
+
 
 /*
  * This class stores the lines in a BASIC program.  Each line
@@ -67,7 +86,7 @@ public:
  * program in the correct sequence.
  */
 
-   void addSourceLine(int lineNumber, std::string line);
+   void addSourceLine(int lineNumber, std::string line, Statement * parsed_line);
 
 /*
  * Method: removeSourceLine
@@ -135,8 +154,13 @@ public:
 
    int getNextLineNumber(int lineNumber);
 
+   void list();
+
+   void run();
+
 private:
 
+   map<int, ProgramLine> code;
 // Fill this in with whatever types and instance variables you need
 
 };

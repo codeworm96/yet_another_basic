@@ -9,9 +9,29 @@
  */
 
 #include <string>
+#include <map>
+#include <memory>
+#include <iostream>
 #include "program.h"
 #include "statement.h"
+#include "evalstate.h"
 using namespace std;
+
+ProgramLine::ProgramLine(string origin_line, Statement * parsed_line):line(origin_line), stmt(parsed_line) {}
+
+ProgramLine::ProgramLine():line(""), stmt(nullptr) {}
+
+ProgramLine::~ProgramLine() {}
+
+void ProgramLine::show()
+{
+    cout << line << endl;
+}
+
+void ProgramLine::execute(EvalState & state)
+{
+    stmt->execute(state);
+}
 
 Program::Program() {
    // Replace this stub with your own code
@@ -22,15 +42,18 @@ Program::~Program() {
 }
 
 void Program::clear() {
-   // Replace this stub with your own code
+    code.clear();
 }
 
-void Program::addSourceLine(int lineNumber, string line) {
-   // Replace this stub with your own code
+void Program::addSourceLine(int lineNumber, string line, Statement * stmt) {
+    code[lineNumber] = ProgramLine(line, stmt);
 }
 
 void Program::removeSourceLine(int lineNumber) {
-   // Replace this stub with your own code
+    map<int, ProgramLine>::iterator it = code.find(lineNumber);
+    if (it != code.end()){
+        code.erase(it);
+    }
 }
 
 string Program::getSourceLine(int lineNumber) {
@@ -51,4 +74,36 @@ int Program::getFirstLineNumber() {
 
 int Program::getNextLineNumber(int lineNumber) {
    return 0;     // Replace this stub with your own code
+}
+
+void Program::list()
+{
+    map<int, ProgramLine>::iterator it = code.begin();
+    while(it != code.end()){
+        it->second.show();
+        ++it;
+    }
+}
+
+void Program::run()
+{
+    EvalState state;
+    map<int, ProgramLine>::iterator it = code.begin();
+    while(it != code.end()){
+        state.setPC(EvalState::SEQUENTIAL);
+        it->second.execute(state);
+        int pc = state.getPC();
+        if (pc == EvalState::HALT){
+            return;
+        }else{
+            if (pc == EvalState::SEQUENTIAL){
+                ++it;
+            }else{
+                it = code.find(pc);
+                if (it == code.end()){
+                    error("LINE NUMBER ERROR");
+                }
+            }
+        }
+    }
 }

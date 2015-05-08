@@ -34,6 +34,15 @@ Expression *parseExp(TokenScanner & scanner);
 Statement *parseDirect(TokenScanner & scanner);
 
 /*
+ * Function: parseStatement
+ * Usage: Statement *stmt = parseStatement(scanner);
+ * -------------------------------------------
+ * Parse a statement
+ */
+
+Statement *parseStatement(TokenScanner & scanner);
+
+/*
  * Function: readE
  * Usage: Expression *exp = readE(scanner, prec);
  * ----------------------------------------------

@@ -44,3 +44,9 @@ int EvalState::getPC()
 {
     return program_counter;
 }
+
+void EvalState::clear()
+{
+    symbolTable.clear();
+    program_counter = SEQUENTIAL;
+}

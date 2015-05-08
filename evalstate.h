@@ -95,6 +95,8 @@ public:
 
    int getPC();
 
+   void clear();
+
 private:
 
    int program_counter; //store the address of the next instruction
