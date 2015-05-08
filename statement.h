@@ -285,4 +285,40 @@ class GotoStatement : public Statement
         LineNumber * line_number;
 };
 
+class IfStatement : public Statement
+{
+    public:
+/*
+ * Constructor: IfStatement
+ * ----------------------
+ * The constructor initializes a if statement from a BoolExp and a
+ * line number.
+ */
+
+   IfStatement(BoolExp * exp, LineNumber * ln);
+
+/*
+ * Destructor: ~IfStatement
+ * Usage: delete if_stmt;
+ * -------------------
+ * The destructor deallocates the storage for this statement.
+ * It must be declared virtual to ensure that the correct subclass
+ * destructor is called when deleting a statement.
+ */
+
+   virtual ~IfStatement();
+
+/*
+ * Method: execute
+ * Usage: stmt->execute(state);
+ * ----------------------------
+ *  set the program counter to the right value
+ */
+
+   virtual void execute(EvalState & state);
+
+    private:
+        LineNumber * line_number;
+        BoolExp * cond;
+};
 #endif

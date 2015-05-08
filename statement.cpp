@@ -112,3 +112,20 @@ void GotoStatement::execute(EvalState & state)
 {
     state.setPC(line_number->eval(state));
 }
+
+/* Implementation of the IfStatement class */
+
+IfStatement::IfStatement(BoolExp * exp, LineNumber * ln):cond(exp), line_number(ln) {}
+
+IfStatement::~IfStatement() {
+   delete cond;
+   delete line_number;
+}
+
+void IfStatement::execute(EvalState & state)
+{
+    bool res = cond->eval(state);
+    if (res){
+        state.setPC(line_number->eval(state));
+    }
+}
