@@ -266,7 +266,7 @@ public:
  * The destructor deallocates the storage for this line number.
  */
 
-   virtual ~LineNumber();
+   ~LineNumber();
 
 /*
  * Method: eval
@@ -276,10 +276,40 @@ public:
  * the specified EvalState object.
  */
 
-   virtual int eval(EvalState & state);
+   int eval(EvalState & state);
 
 private:
    int value;
+};
 
+/*
+ * Class: BoolExp
+ * ------------------
+ * This class represents a compound expression consisting of
+ * two subexpressions joined by a comparer.
+ */
+
+class BoolExp {
+
+public:
+
+/*
+ * Constructor: BoolExp
+ * Usage: BoolExp *exp = new BoolExp(op, lhs, rhs);
+ * -------------------------------------------------------
+ * The constructor initializes a new bool expression
+ * which is composed of the operator (op) and the left and
+ * right subexpression (lhs and rhs).
+ */
+
+   BoolExp(std::string op, Expression *lhs, Expression *rhs);
+
+   ~BoolExp();
+   bool eval(EvalState & state);
+
+private:
+
+   std::string op;
+   Expression *lhs, *rhs;
 };
 #endif

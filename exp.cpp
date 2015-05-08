@@ -180,4 +180,38 @@ int LineNumber::eval(EvalState & state) {
    return value;
 }
 
+/*
+ * Implementation notes: the BoolExp class
+ * ----------------------------------------------
+ * The BoolExp class declares instance variables for the operator
+ * and the left and right subexpressions.  The implementation of eval 
+ * evaluates the subexpressions recursively and then compares them.
+ */
+
+BoolExp::BoolExp(string op, Expression *lhs, Expression *rhs) {
+   this->op = op;
+   this->lhs = lhs;
+   this->rhs = rhs;
+}
+
+BoolExp::~BoolExp() {
+   delete lhs;
+   delete rhs;
+}
+
+/*
+ * Implementation notes: eval
+ * --------------------------
+ */
+
+bool BoolExp::eval(EvalState & state) {
+   int left = lhs->eval(state);
+   int right = rhs->eval(state);
+   if (op == "<") return left < right;
+   if (op == ">") return left > right;
+   if (op == "=") return left = right;
+   error("SYNTAX ERROR");
+   return false;
+}
+
 
