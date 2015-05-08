@@ -97,3 +97,18 @@ void EndStatement::execute(EvalState & state)
 {
     state.setPC(EvalState::HALT);
 }
+
+/* Implementation of the GotoStatement class */
+
+GotoStatement::GotoStatement(LineNumber * ln) {
+   line_number = ln;
+}
+
+GotoStatement::~GotoStatement() {
+   delete line_number;
+}
+
+void GotoStatement::execute(EvalState & state)
+{
+    state.setPC(line_number->eval(state));
+}

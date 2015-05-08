@@ -249,4 +249,40 @@ class EndStatement : public Statement
 
 };
 
+class GotoStatement : public Statement
+{
+    public:
+/*
+ * Constructor: GotoStatement
+ * ----------------------
+ * The constructor initializes a goto statement from an
+ * line number.
+ */
+
+   GotoStatement(LineNumber * ln);
+
+/*
+ * Destructor: ~GotoStatement
+ * Usage: delete goto_stmt;
+ * -------------------
+ * The destructor deallocates the storage for this statement.
+ * It must be declared virtual to ensure that the correct subclass
+ * destructor is called when deleting a statement.
+ */
+
+   virtual ~GotoStatement();
+
+/*
+ * Method: execute
+ * Usage: stmt->execute(state);
+ * ----------------------------
+ *  set the program counter to the right value
+ */
+
+   virtual void execute(EvalState & state);
+
+    private:
+        LineNumber * line_number;
+};
+
 #endif
