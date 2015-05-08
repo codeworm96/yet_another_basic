@@ -159,3 +159,25 @@ Expression *CompoundExp::getLHS() {
 Expression *CompoundExp::getRHS() {
    return rhs;
 }
+
+/*
+ * Implementation notes: the line number subclass
+ * ----------------------------------------------
+ * The line number contains a non-negative integer. The eval method doesn't use the
+ * value of state but needs it to match the general prototype for eval.
+ */
+
+LineNumber::LineNumber(int ln) {
+    if (ln < 0){
+        error("LINE NUMBER ERROR");
+    }
+    value = ln;
+}
+
+LineNumber::~LineNumber() {}
+
+int LineNumber::eval(EvalState & state) {
+   return value;
+}
+
+

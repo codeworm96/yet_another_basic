@@ -247,4 +247,39 @@ private:
 
 };
 
+class LineNumber {
+
+public:
+
+/*
+ * Constructor: LineNumber
+ * -----------------------
+ * Initialize a Line Number with a non-negative integer
+ */
+
+   LineNumber(int ln);
+
+/*
+ * Destructor: ~LineNumber
+ * Usage: delete ln;
+ * ------------------
+ * The destructor deallocates the storage for this line number.
+ */
+
+   virtual ~LineNumber();
+
+/*
+ * Method: eval
+ * Usage: int value = ln->eval(state);
+ * ------------------------------------
+ * Evaluates this line number and returns its value in the context of
+ * the specified EvalState object.
+ */
+
+   virtual int eval(EvalState & state);
+
+private:
+   int value;
+
+};
 #endif
