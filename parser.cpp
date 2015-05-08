@@ -132,6 +132,18 @@ LineNumber * parseLineNumber(TokenScanner & scanner)
     error("SYNTAX ERROR");
 }
 
+//read a bool expression
+BoolExp * parseBoolExp(TokenScanner & scanner)
+{
+    Expression * lhs = parseExp(scanner);
+    string token = scanner.nextToken();
+    if (token == "=" || token == ">" || token == "<"){
+        Expression * rhs = parseExp(scanner);
+        BoolExp * res = new BoolExp(token, lhs, rhs);
+        return res;
+    }
+    error("SYNTAX ERROR");
+}
 
 //read a let statement (after the let keyword)
 LetStatement * parseLet(TokenScanner & scanner)
@@ -149,6 +161,22 @@ LetStatement * parseLet(TokenScanner & scanner)
     return stmt;
 }
 
+//read a if statement (after the if keyword)
+IfStatement * parseIf(TokenScanner & scanner)
+{
+    BoolExp * exp = parseBoolExp(scanner);
+    string token = scanner.nextToken();
+    if (token != "THEN"){
+        error("SYNTAX ERROR");
+    }
+    LineNumber * ln = parseLineNumber(scanner);
+    if (scanner.hasMoreTokens()){
+        error("SYNTAX ERROR");
+    }
+    IfStatement * stmt = new IfStatement(exp, ln);
+    return stmt;
+}
+
 //read a input statement (after the input keyword)
 InputStatement * parseInput(TokenScanner & scanner)
 {
@@ -157,6 +185,17 @@ InputStatement * parseInput(TokenScanner & scanner)
         error("SYNTAX ERROR");
     }
     InputStatement * stmt = new InputStatement(name);
+    return stmt;
+}
+
+//read a goto statement (after the goto keyword)
+GotoStatement * parseGoto(TokenScanner & scanner)
+{
+    LineNumber * ln = parseLineNumber(scanner);
+    if (scanner.hasMoreTokens()){
+        error("SYNTAX ERROR");
+    }
+    GotoStatement * stmt = new GotoStatement(ln);
     return stmt;
 }
 
@@ -171,6 +210,20 @@ PrintStatement * parsePrint(TokenScanner & scanner)
     return stmt;
 }
 
+//read a rem statement (after the rem keyword)
+RemStatement * parseRem(TokenScanner & scanner)
+{
+    RemStatement * stmt = new RemStatement;
+    return stmt;
+}
+
+//read a end statement (after the end keyword)
+EndStatement * parseEnd(TokenScanner & scanner)
+{
+    EndStatement * stmt = new EndStatement;
+    return stmt;
+}
+
 //parse a direct executed statement
 Statement * parseDirect(TokenScanner & scanner)
 {
@@ -178,5 +231,19 @@ Statement * parseDirect(TokenScanner & scanner)
     if (token == "LET") return parseLet(scanner);
     if (token == "INPUT") return parseInput(scanner);
     if (token == "PRINT") return parsePrint(scanner);
+    error("SYNTAX ERROR");
+}
+
+//parse a statement
+Statement * parseStatement(TokenScanner & scanner)
+{
+    string token = scanner.nextToken();
+    if (token == "LET") return parseLet(scanner);
+    if (token == "INPUT") return parseInput(scanner);
+    if (token == "PRINT") return parsePrint(scanner);
+    if (token == "REM") return parseRem(scanner);
+    if (token == "IF") return parseIf(scanner);
+    if (token == "GOTO") return parseGoto(scanner);
+    if (token == "END") return parseEnd(scanner);
     error("SYNTAX ERROR");
 }
