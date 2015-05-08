@@ -216,5 +216,37 @@ class PrintStatement : public Statement
         Expression * exp;
 };
 
+class EndStatement : public Statement
+{
+    public:
+/*
+ * Constructor: EndStatement
+ * ----------------------
+ * The constructor initializes a end statement
+ */
+
+   EndStatement();
+
+/*
+ * Destructor: ~EndStatement
+ * Usage: delete end_stmt;
+ * -------------------
+ * The destructor deallocates the storage for this statement.
+ * It must be declared virtual to ensure that the correct subclass
+ * destructor is called when deleting a statement.
+ */
+
+   virtual ~EndStatement();
+
+/*
+ * Method: execute
+ * Usage: stmt->execute(state);
+ * ----------------------------
+ *  execute a end will halt the program
+ */
+
+   virtual void execute(EvalState & state);
+
+};
 
 #endif

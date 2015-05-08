@@ -83,3 +83,17 @@ void PrintStatement::execute(EvalState & state)
     cout << res <<endl;
 }
 
+/* Implementation of the EndStatement class */
+
+EndStatement::EndStatement() {
+   /* Empty */
+}
+
+EndStatement::~EndStatement() {
+   /* Empty */
+}
+
+void EndStatement::execute(EvalState & state)
+{
+    state.setPC(EvalState::HALT);
+}

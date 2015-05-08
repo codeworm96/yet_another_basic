@@ -29,6 +29,7 @@ class EvalState {
 public:
 
     static const int SEQUENTIAL = -1;  //Special Line Number for sequential executive;
+    static const int HALT = -2;  //Special Line Number for halting;
 
 
 /*
