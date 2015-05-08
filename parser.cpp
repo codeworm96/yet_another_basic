@@ -63,7 +63,7 @@ Expression *readE(TokenScanner & scanner, int prec) {
    Expression *exp = readT(scanner);
    string token;
    while (true) {
-      token = get_op(scanner);
+      token = scanner.nextToken();
       int newPrec = precedence(token);
       if (newPrec <= prec) break;
       Expression *rhs = readE(scanner, newPrec);
@@ -141,6 +141,7 @@ BoolExp * parseBoolExp(TokenScanner & scanner)
         BoolExp * res = new BoolExp(token, lhs, rhs);
         return res;
     }
+    //cout << token << scanner.nextToken()<<endl;
     error("SYNTAX ERROR");
 }
 

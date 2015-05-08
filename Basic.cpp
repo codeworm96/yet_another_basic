@@ -109,7 +109,7 @@ void processLine(string line, Program & program, EvalState & state, Lexicon & di
        }
        if (token == "RUN")
        {
-           program.run();
+           program.run(state);
            return;
        }
        if (token == "CLEAR"){

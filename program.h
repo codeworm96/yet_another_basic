@@ -156,7 +156,7 @@ public:
 
    void list();
 
-   void run();
+   void run(EvalState & state);
 
 private:
 

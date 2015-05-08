@@ -85,9 +85,8 @@ void Program::list()
     }
 }
 
-void Program::run()
+void Program::run(EvalState & state)
 {
-    EvalState state;
     map<int, ProgramLine>::iterator it = code.begin();
     while(it != code.end()){
         state.setPC(EvalState::SEQUENTIAL);

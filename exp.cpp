@@ -209,7 +209,7 @@ bool BoolExp::eval(EvalState & state) {
    int right = rhs->eval(state);
    if (op == "<") return left < right;
    if (op == ">") return left > right;
-   if (op == "=") return left = right;
+   if (op == "=") return left == right;
    error("SYNTAX ERROR");
    return false;
 }
