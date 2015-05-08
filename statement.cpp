@@ -100,9 +100,7 @@ void EndStatement::execute(EvalState & state)
 
 /* Implementation of the GotoStatement class */
 
-GotoStatement::GotoStatement(LineNumber * ln) {
-   line_number = ln;
-}
+GotoStatement::GotoStatement(LineNumber * ln) :line_number(ln) {}
 
 GotoStatement::~GotoStatement() {
    delete line_number;
