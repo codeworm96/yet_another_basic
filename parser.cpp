@@ -10,6 +10,7 @@
 #include "exp.h"
 #include "parser.h"
 #include "statement.h"
+#include "utility.h"
 
 #include "../StanfordCPPLib/error.h"
 #include "../StanfordCPPLib/strlib.h"
@@ -116,6 +117,21 @@ string parseName(TokenScanner & scanner)
     }
     return token;
 }
+
+//read a line number
+LineNumber * parseLineNumber(TokenScanner & scanner)
+{
+    string token = scanner.nextToken();
+    if (scanner.getTokenType(token) == NUMBER){
+        int res = str2int(token);
+        if (res >= 0){
+            LineNumber * ret = new LineNumber(res);
+            return ret;
+        }
+    }
+    error("SYNTAX ERROR");
+}
+
 
 //read a let statement (after the let keyword)
 LetStatement * parseLet(TokenScanner & scanner)
