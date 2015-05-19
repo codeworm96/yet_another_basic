@@ -95,6 +95,9 @@ void processLine(string line, Program & program, EvalState & state, Lexicon & di
        stmt->execute(state);
        delete stmt;
    }else{
+       if (scanner.hasMoreTokens()){
+           error("SYNTAX ERROR");
+       }
        if (token == "QUIT")
        {
            exit(0);

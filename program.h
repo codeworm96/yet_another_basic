@@ -15,17 +15,20 @@
 #include "evalstate.h"
 using namespace std;
 
+/*
+ * This class represent a line of the program, consist of the origin line and the parsed AST
+ */
 class ProgramLine
 {
     public:
-        ProgramLine(string origin_line, Statement * parsed_line);
+        ProgramLine(string origin_line, Statement * parsed_ast);
         ProgramLine();
-        ~ProgramLine();
         //excute the line
         void execute(EvalState & state);
         //Show the line
         void show();
     private:
+        //used smart pointer to handle the AST
         shared_ptr<Statement> stmt;
         string line;
 };
@@ -77,13 +80,11 @@ public:
 
 /*
  * Method: addSourceLine
- * Usage: program.addSourceLine(lineNumber, line);
+ * Usage: program.addSourceLine(lineNumber, line, ast);
  * -----------------------------------------------
  * Adds a source line to the program with the specified line number.
- * If that line already exists, the text of the line replaces
- * the text of any existing line and the parsed representation
- * (if any) is deleted.  If the line is new, it is added to the
- * program in the correct sequence.
+ * If that line already exists, the line replaces the old one.
+ * if the line is new, it is added.
  */
 
    void addSourceLine(int lineNumber, std::string line, Statement * parsed_line);
@@ -101,67 +102,27 @@ public:
    void removeSourceLine(int lineNumber);
 
 /*
- * Method: getSourceLine
- * Usage: string line = program.getSourceLine(lineNumber);
- * -------------------------------------------------------
- * Returns the program line with the specified line number.
- * If no such line exists, this method returns the empty string.
+ * Method: list
+ * Usage: program.list()
+ * --------------------------------------------
+ * Just list all the lines.
  */
-
-   std::string getSourceLine(int lineNumber);
-
-/*
- * Method: setParsedStatement
- * Usage: program.setParsedStatement(lineNumber, stmt);
- * ----------------------------------------------------
- * Adds the parsed representation of the statement to the statement
- * at the specified line number.  If no such line exists, this
- * method raises an error.  If a previous parsed representation
- * exists, the memory for that statement is reclaimed.
- */
-
-   void setParsedStatement(int lineNumber, Statement *stmt);
-
-/*
- * Method: getParsedStatement
- * Usage: Statement *stmt = program.getParsedStatement(lineNumber);
- * ----------------------------------------------------------------
- * Retrieves the parsed representation of the statement at the
- * specified line number.  If no value has been set, this method
- * returns NULL.
- */
-
-   Statement *getParsedStatement(int lineNumber);
-
-/*
- * Method: getFirstLineNumber
- * Usage: int lineNumber = program.getFirstLineNumber();
- * -----------------------------------------------------
- * Returns the line number of the first line in the program.
- * If the program has no lines, this method returns -1.
- */
-
-   int getFirstLineNumber();
-
-/*
- * Method: getNextLineNumber
- * Usage: int nextLine = program.getNextLineNumber(lineNumber);
- * ------------------------------------------------------------
- * Returns the line number of the first line in the program whose
- * number is larger than the specified one, which must already exist
- * in the program.  If no more lines remain, this method returns -1.
- */
-
-   int getNextLineNumber(int lineNumber);
 
    void list();
+
+/*
+ * Method: run
+ * Usage: program.run()
+ * ---------------------------------------------
+ *  Run the program.
+ */
 
    void run(EvalState & state);
 
 private:
 
+   //the map to store the code
    map<int, ProgramLine> code;
-// Fill this in with whatever types and instance variables you need
 
 };
 

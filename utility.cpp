@@ -2,6 +2,7 @@
 #include <sstream>
 #include <string>
 #include "../StanfordCPPLib/error.h"
+#include "utility.h"
 
 int str2int(std::string s)
 {

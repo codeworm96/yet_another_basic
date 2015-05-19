@@ -1,11 +1,7 @@
 /*
  * File: program.cpp
  * -----------------
- * This file is a stub implementation of the program.h interface
- * in which none of the methods do anything beyond returning a
- * value of the correct type.  Your job is to fill in the bodies
- * of each of these methods with an implementation that satisfies
- * the performance guarantees specified in the assignment.
+ * This file is the implementation of the program.h interface.
  */
 
 #include <string>
@@ -17,11 +13,11 @@
 #include "evalstate.h"
 using namespace std;
 
+/* Implementation of the ProgramLine class */
+
 ProgramLine::ProgramLine(string origin_line, Statement * parsed_line):line(origin_line), stmt(parsed_line) {}
 
 ProgramLine::ProgramLine():line(""), stmt(nullptr) {}
-
-ProgramLine::~ProgramLine() {}
 
 void ProgramLine::show()
 {
@@ -34,15 +30,15 @@ void ProgramLine::execute(EvalState & state)
 }
 
 Program::Program() {
-   // Replace this stub with your own code
+   // Empty 
 }
 
 Program::~Program() {
-   // Replace this stub with your own code
+   // Empty 
 }
 
 void Program::clear() {
-    code.clear();
+    code.clear(); //proxy the message to the map
 }
 
 void Program::addSourceLine(int lineNumber, string line, Statement * stmt) {
@@ -54,26 +50,6 @@ void Program::removeSourceLine(int lineNumber) {
     if (it != code.end()){
         code.erase(it);
     }
-}
-
-string Program::getSourceLine(int lineNumber) {
-   return "";    // Replace this stub with your own code
-}
-
-void Program::setParsedStatement(int lineNumber, Statement *stmt) {
-   // Replace this stub with your own code
-}
-
-Statement *Program::getParsedStatement(int lineNumber) {
-   return NULL;  // Replace this stub with your own code
-}
-
-int Program::getFirstLineNumber() {
-   return 0;     // Replace this stub with your own code
-}
-
-int Program::getNextLineNumber(int lineNumber) {
-   return 0;     // Replace this stub with your own code
 }
 
 void Program::list()
@@ -89,15 +65,15 @@ void Program::run(EvalState & state)
 {
     map<int, ProgramLine>::iterator it = code.begin();
     while(it != code.end()){
-        state.setPC(EvalState::SEQUENTIAL);
+        state.setPC(EvalState::SEQUENTIAL);  //default
         it->second.execute(state);
         int pc = state.getPC();
-        if (pc == EvalState::HALT){
+        if (pc == EvalState::HALT){          //end
             return;
         }else{
             if (pc == EvalState::SEQUENTIAL){
                 ++it;
-            }else{
+            }else{                           //jump
                 it = code.find(pc);
                 if (it == code.end()){
                     error("LINE NUMBER ERROR");
