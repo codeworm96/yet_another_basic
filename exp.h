@@ -116,7 +116,7 @@ public:
  * to the given value.
  */
 
-   ConstantExp(int value);
+   ConstantExp(int val);
 
 /*
  * Prototypes for the virtual methods
@@ -160,10 +160,10 @@ public:
  * Usage: Expression *exp = new IdentifierExp(name);
  * -------------------------------------------------
  * The constructor initializes a new identifier expression
- * for the variable named by name.
+ * for the variable named by id.
  */
 
-   IdentifierExp(std::string name);
+   IdentifierExp(std::string id);
 
 /*
  * Prototypes for the virtual methods
@@ -212,7 +212,7 @@ public:
  * right subexpression (lhs and rhs).
  */
 
-   CompoundExp(std::string op, Expression *lhs, Expression *rhs);
+   CompoundExp(std::string _op, Expression * _lhs, Expression * _rhs);
 
 /*
  * Prototypes for the virtual methods
@@ -302,7 +302,7 @@ public:
  * right subexpression (lhs and rhs).
  */
 
-   BoolExp(std::string op, Expression *lhs, Expression *rhs);
+   BoolExp(std::string _op, Expression * _lhs, Expression * _rhs);
 
    ~BoolExp();
    bool eval(EvalState & state);

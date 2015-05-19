@@ -35,9 +35,7 @@ Expression::~Expression() {
  * value of state but needs it to match the general prototype for eval.
  */
 
-ConstantExp::ConstantExp(int value) {
-   this->value = value;
-}
+ConstantExp::ConstantExp(int val) :value(val) {}
 
 int ConstantExp::eval(EvalState & state) {
    return value;
@@ -63,9 +61,7 @@ int ConstantExp::getValue() {
  * look this variable up in the evaluation state.
  */
 
-IdentifierExp::IdentifierExp(string name) {
-   this->name = name;
-}
+IdentifierExp::IdentifierExp(string id) :name(id) {}
 
 int IdentifierExp::eval(EvalState & state) {
    if (!state.isDefined(name)) error("VARIABLE NOT DEFINED");
@@ -92,11 +88,7 @@ string IdentifierExp::getName() {
  * evaluates the subexpressions recursively and then applies the operator.
  */
 
-CompoundExp::CompoundExp(string op, Expression *lhs, Expression *rhs) {
-   this->op = op;
-   this->lhs = lhs;
-   this->rhs = rhs;
-}
+CompoundExp::CompoundExp(string _op, Expression * _lhs, Expression * _rhs) :op(_op), lhs(_lhs), rhs(_rhs) {}
 
 CompoundExp::~CompoundExp() {
    delete lhs;
@@ -114,16 +106,6 @@ CompoundExp::~CompoundExp() {
  */
 
 int CompoundExp::eval(EvalState & state) {
-   /*
-   if (op == "=") {
-      if (lhs->getType() != IDENTIFIER) {
-         error("Illegal variable in assignment");
-      }
-      int val = rhs->eval(state);
-      state.setValue(((IdentifierExp *) lhs)->getName(), val);
-      return val;
-   }
-   */
    int left = lhs->eval(state);
    int right = rhs->eval(state);
    if (op == "+") return left + right;
@@ -163,8 +145,7 @@ Expression *CompoundExp::getRHS() {
 /*
  * Implementation notes: the line number subclass
  * ----------------------------------------------
- * The line number contains a non-negative integer. The eval method doesn't use the
- * value of state but needs it to match the general prototype for eval.
+ * The line number contains a non-negative integer.
  */
 
 LineNumber::LineNumber(int ln) {
@@ -188,11 +169,7 @@ int LineNumber::eval(EvalState & state) {
  * evaluates the subexpressions recursively and then compares them.
  */
 
-BoolExp::BoolExp(string op, Expression *lhs, Expression *rhs) {
-   this->op = op;
-   this->lhs = lhs;
-   this->rhs = rhs;
-}
+BoolExp::BoolExp(string _op, Expression * _lhs, Expression * _rhs) :op(_op), lhs(_lhs), rhs(_rhs) {}
 
 BoolExp::~BoolExp() {
    delete lhs;
@@ -213,5 +190,3 @@ bool BoolExp::eval(EvalState & state) {
    error("SYNTAX ERROR");
    return false;
 }
-
-
