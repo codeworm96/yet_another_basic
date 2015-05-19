@@ -186,7 +186,7 @@ class PrintStatement : public Statement
 /*
  * Constructor: PrintStatement
  * ----------------------
- * The constructor initializes a let statement from an
+ * The constructor initializes a print statement from an
  * expression.
  */
 

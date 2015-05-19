@@ -28,8 +28,7 @@ LetStatement::LetStatement(std::string init_name, Expression * init_exp):name(in
 
 LetStatement::~LetStatement()
 {
-    if (exp)
-        delete exp;
+    delete exp;
 }
 
 void LetStatement::execute(EvalState & state)
@@ -50,6 +49,7 @@ RemStatement::~RemStatement() {
 
 void RemStatement::execute(EvalState & state)
 {
+  /* Empty */
 }
 
 /* Implementation of the input statement class */
@@ -73,8 +73,7 @@ PrintStatement::PrintStatement(Expression * init_exp):exp(init_exp) {}
 
 PrintStatement::~PrintStatement()
 {
-    if (exp)
-        delete exp;
+    delete exp;
 }
 
 void PrintStatement::execute(EvalState & state)
