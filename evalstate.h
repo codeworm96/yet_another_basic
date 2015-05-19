@@ -18,10 +18,9 @@
  * This class is passed by reference through the recursive levels
  * of the evaluator and contains information from the evaluation
  * environment that the evaluator may need to know.  In this
- * version, the only information maintained by the EvalState class
- * is a symbol table that maps variable names into their values.
- * Several of the exercises, however, require you to include
- * additional information in the EvalState class.
+ * version, the information maintained by the EvalState class
+ * is a symbol table that maps variable names into their values and a
+ * program counter.
  */
 
 class EvalState {
@@ -94,6 +93,12 @@ public:
  */
 
    int getPC();
+/*
+ * Method: clear
+ * Usage: evalstate.clear()
+ * ---------------------------------------
+ * Clears all the status
+ */
 
    void clear();
 
