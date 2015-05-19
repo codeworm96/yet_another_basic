@@ -16,6 +16,7 @@
 #include "../StanfordCPPLib/strlib.h"
 #include "../StanfordCPPLib/tokenscanner.h"
 #include "../StanfordCPPLib/lexicon.h"
+
 using namespace std;
 
 /*
@@ -27,19 +28,6 @@ using namespace std;
 Expression *parseExp(TokenScanner & scanner) {
    Expression *exp = readE(scanner);
    return exp;
-}
-
-
-// get an operator from scanner, if fails returns an empty string
-string get_op(TokenScanner & scanner)
-{
-    string op = scanner.nextToken();
-    if (op == "+" || op == "-" || op == "*" || op == "/"){
-        return op;
-    }else{
-        op = "";
-        return op;
-    }
 }
 
 bool is_keyword(string id)
@@ -83,7 +71,7 @@ Expression *readE(TokenScanner & scanner, int prec) {
 Expression *readT(TokenScanner & scanner) {
    string token = scanner.nextToken();
    TokenType type = scanner.getTokenType(token);
-   if (type == NUMBER) return new ConstantExp(stringToInteger(token));
+   if (type == NUMBER) return new ConstantExp(str2int(token));
    if (type == WORD && !is_keyword(token)) return new IdentifierExp(token);
    if (token != "(") error("SYNTAX ERROR");
    Expression *exp = readE(scanner);
@@ -110,6 +98,8 @@ int precedence(string token) {
 //read a name
 string parseName(TokenScanner & scanner)
 {
+    if (!scanner.hasMoreTokens())
+        error("SYNTAX ERROR");
     string token = scanner.nextToken();
     if ((scanner.getTokenType(token) != WORD) || is_keyword(token)){
         error("SYNTAX ERROR");
@@ -120,6 +110,8 @@ string parseName(TokenScanner & scanner)
 //read a line number
 LineNumber * parseLineNumber(TokenScanner & scanner)
 {
+    if (!scanner.hasMoreTokens())
+        error("SYNTAX ERROR");
     string token = scanner.nextToken();
     if (scanner.getTokenType(token) == NUMBER){
         int res = str2int(token);
@@ -135,13 +127,14 @@ LineNumber * parseLineNumber(TokenScanner & scanner)
 BoolExp * parseBoolExp(TokenScanner & scanner)
 {
     Expression * lhs = parseExp(scanner);
+    if (!scanner.hasMoreTokens())
+        error("SYNTAX ERROR");
     string token = scanner.nextToken();
     if (token == "=" || token == ">" || token == "<"){
         Expression * rhs = parseExp(scanner);
         BoolExp * res = new BoolExp(token, lhs, rhs);
         return res;
     }
-    //cout << token << scanner.nextToken()<<endl;
     error("SYNTAX ERROR");
 }
 
@@ -149,6 +142,8 @@ BoolExp * parseBoolExp(TokenScanner & scanner)
 LetStatement * parseLet(TokenScanner & scanner)
 {
     string name = parseName(scanner);
+    if (!scanner.hasMoreTokens())
+        error("SYNTAX ERROR");
     string token = scanner.nextToken();
     if (token != "="){
         error("SYNTAX ERROR");
@@ -165,6 +160,8 @@ LetStatement * parseLet(TokenScanner & scanner)
 IfStatement * parseIf(TokenScanner & scanner)
 {
     BoolExp * exp = parseBoolExp(scanner);
+    if (!scanner.hasMoreTokens())
+        error("SYNTAX ERROR");
     string token = scanner.nextToken();
     if (token != "THEN"){
         error("SYNTAX ERROR");
@@ -220,6 +217,9 @@ RemStatement * parseRem(TokenScanner & scanner)
 //read a end statement (after the end keyword)
 EndStatement * parseEnd(TokenScanner & scanner)
 {
+    if (scanner.hasMoreTokens()){
+        error("SYNTAX ERROR");
+    }
     EndStatement * stmt = new EndStatement;
     return stmt;
 }
@@ -227,6 +227,8 @@ EndStatement * parseEnd(TokenScanner & scanner)
 //parse a direct executed statement
 Statement * parseDirect(TokenScanner & scanner)
 {
+    if (!scanner.hasMoreTokens())
+        error("SYNTAX ERROR");
     string token = scanner.nextToken();
     if (token == "LET") return parseLet(scanner);
     if (token == "INPUT") return parseInput(scanner);
@@ -237,6 +239,8 @@ Statement * parseDirect(TokenScanner & scanner)
 //parse a statement
 Statement * parseStatement(TokenScanner & scanner)
 {
+    if (!scanner.hasMoreTokens())
+        error("SYNTAX ERROR");
     string token = scanner.nextToken();
     if (token == "LET") return parseLet(scanner);
     if (token == "INPUT") return parseInput(scanner);
