@@ -12,7 +12,7 @@ int str2int(std::string s)
     if (iss.eof()){
         return res;
     }else{
-        error("INVALID NUMBER");
+        error("SYNTAX ERROR");  //I think this kind of error should be invalid number, but INVALID NUMBER is only for INPUT
     }
 }
 

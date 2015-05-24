@@ -19,12 +19,12 @@
 #include "../StanfordCPPLib/tokenscanner.h"
 #include "../StanfordCPPLib/simpio.h"
 #include "../StanfordCPPLib/strlib.h"
-#include "../StanfordCPPLib/lexicon.h"
+//#include "../StanfordCPPLib/lexicon.h"
 using namespace std;
 
 /* Function prototypes */
 
-void processLine(string line, Program & program, EvalState & state, Lexicon & directStmt);
+void processLine(string line, Program & program, EvalState & state);
 
 /* Main program */
 
@@ -32,17 +32,17 @@ int main() {
    //init
    EvalState state;
    Program program;
-   Lexicon directStmt;
-   directStmt.add("LET");
-   directStmt.add("INPUT");
-   directStmt.add("PRINT");
-
    //Loop . Print . Eval . Read
 
    //loop
    while (true) {
       try {
-         processLine(getLine(), program, state, directStmt);
+         string input = getLine();
+         if (!cin){
+             cout << "fatal error: input fail!" << endl;
+             exit(0);
+         }
+         processLine(input, program, state);
       } catch (ErrorException & ex) {
          cout << ex.getMessage() << endl;
       }
@@ -52,14 +52,14 @@ int main() {
 
 /*
  * Function: processLine
- * Usage: processLine(line, program, state, directstmt);
+ * Usage: processLine(line, program, state);
  * -----------------------------------------
  * Processes a single line entered by the user. In this version,
  * it can respond correctly when the user enters a program line (which begins with a number)
  * or one of the BASIC commands, such as LIST or RUN.
  */
 
-void processLine(string line, Program & program, EvalState & state, Lexicon & directStmt) {
+void processLine(string line, Program & program, EvalState & state) {
    //setup
    TokenScanner scanner;
    scanner.ignoreWhitespace();
@@ -86,7 +86,7 @@ void processLine(string line, Program & program, EvalState & state, Lexicon & di
        return;
    }
    //direct execute
-   if (directStmt.contains(token)){
+   if (token == "LET" || token == "INPUT" || token == "PRINT"){
        scanner.saveToken(token);
        Statement * stmt = parseDirect(scanner);
        stmt->execute(state);

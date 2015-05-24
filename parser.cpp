@@ -15,7 +15,7 @@
 #include "../StanfordCPPLib/error.h"
 #include "../StanfordCPPLib/strlib.h"
 #include "../StanfordCPPLib/tokenscanner.h"
-#include "../StanfordCPPLib/lexicon.h"
+//#include "../StanfordCPPLib/lexicon.h"
 
 using namespace std;
 
@@ -32,8 +32,22 @@ Expression *parseExp(TokenScanner & scanner) {
 
 bool is_keyword(string id)
 {
-    static Lexicon keyword("BasicKeywords.txt");
-    return keyword.contains(id);
+    //static Lexicon keyword("BasicKeywords.txt");
+    //stop use lexicon because it is not case-sensitive
+    if (id == "QUIT") return true;
+    if (id == "LIST") return true;
+    if (id == "RUN") return true;
+    if (id == "CLEAR") return true;
+    if (id == "HELP") return true;
+    if (id == "IF") return true;
+    if (id == "THEN") return true;
+    if (id == "GOTO") return true;
+    if (id == "REM") return true;
+    if (id == "LET") return true;
+    if (id == "PRINT") return true;
+    if (id == "INPUT") return true;
+    if (id == "END") return true;
+    return false;
 }
 
 /*
